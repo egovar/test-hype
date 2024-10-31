@@ -1,23 +1,14 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import dynamic from "next/dynamic";
+import { MintDialog } from "@/components/mintDialog";
+import { WalletButton } from "@/components/walletButton";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 export default function Home() {
-  const WalletMultiButton = dynamic(
-    async () =>
-      (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
-    { ssr: false },
-  );
-  const WalletDisconnectButton = dynamic(
-    async () =>
-      (await import("@solana/wallet-adapter-react-ui")).WalletDisconnectButton,
-    { ssr: false },
-  );
+  const { publicKey } = useWallet();
   return (
-    <div className="h-screen flex items-center justify-center bg-zinc-600">
-      <WalletMultiButton />
-      <WalletDisconnectButton />
-      <Button>Mint</Button>
+    <div className="h-screen flex items-center justify-center gap-4">
+      <WalletButton className="w-[200px]" />
+      {publicKey && <MintDialog className="w-[200px]" />}
     </div>
   );
 }
